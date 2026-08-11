@@ -1,0 +1,12 @@
+#dt {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 25px;
+    padding: 30px;
+    padding-top:150px;
+}
+
+#dt .cd {
+    width: 100%;
+}
+

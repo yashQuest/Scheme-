@@ -1,0 +1,46 @@
+{%extends "base.html"%}
+
+{% block title %}Test{% endblock %}
+
+{% block content %}
+<div id="dt">
+
+    {% for scheme in schemes %}
+
+    <div class="cd card">
+
+        <img src="{{ url_for('static', filename=scheme.image) }}"
+             class="card-img-top">
+
+        <div class="card-body">
+
+            <h5 class="card-title">
+                {{ scheme.scheme_name }}
+            </h5>
+
+            <p class="card-text">
+                {{ scheme.description }}
+            </p>
+
+            <br>
+            <p class="card-text">
+                {{ scheme.benefits }}
+            </p>
+            <br>
+            <p class="card-text">
+                {{ scheme.required_document }}
+            </p>
+
+            <a href={{scheme.official_link}} class="btn btn-primary">
+                View Details
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
