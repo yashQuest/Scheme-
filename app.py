@@ -18,9 +18,7 @@ app=Flask(__name__)
 def home():
     return render_template("home.html")
 
-@app.route('/eligibility')
-def eligibility():
-    return render_template('form.html')
+
 
 
 @app.route("/find/<int:scheme_id>")
