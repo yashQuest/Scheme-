@@ -30,5 +30,14 @@ def find(scheme_id):
     schemes = cursor.fetchall()
     return render_template("test.html",schemes=schemes,num=len(schemes))
 
+@app.route("/Eligibility")
+def eligibility():
+    return render_template("eligibility.html")
+
+
+@app.route("/ContactUs")
+def contact():
+    return render_template("contactUs.html")
+
 if __name__=="__main__":
     app.run(debug=True)

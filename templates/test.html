@@ -2,6 +2,10 @@
 
 {% block title %}Test{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{url_for('static',filename='test.css')}}">
+{% endblock %}
+
 {% block content %}
 <div id="dt">
 

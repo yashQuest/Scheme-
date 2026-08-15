@@ -4,6 +4,8 @@ header{
     width:100%;
     z-index:1000;
     background-color:white;
+    top:0;
+    left:0;
 
 }
 #navbar{
@@ -71,4 +73,9 @@ a:hover{
     display:flex;
     justify-content:space-around;
     align-items:center;
+}
+
+.nav{
+    text-decoration: none;
+    color:black;
 }
