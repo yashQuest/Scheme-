@@ -1,0 +1,454 @@
+{% extends "base.html" %}
+
+{% block title %}About Us{% endblock %}
+
+{% block extra_css%}<link rel="stylesheet" href="{{url_for('static',filename='AboutUs.css')}}">{% endblock %}
+{% block content %}
+
+<!-- =========================
+     ABOUT HERO
+========================= -->
+
+<section class="about-hero">
+
+    <div class="about-hero-content">
+
+        <div class="about-badge">
+            🇮🇳 Empowering Citizens Through Information
+        </div>
+
+        <h1>
+            Making Government Schemes
+            <span>Simple & Accessible</span>
+        </h1>
+
+        <p>
+            OurScheme helps you discover government schemes,
+            understand their benefits and eligibility, and find
+            the information you need — all in one place.
+        </p>
+
+        <div class="about-hero-buttons">
+
+            <a href="{{ url_for('home') }}" class="about-primary-btn">
+                Explore Schemes →
+            </a>
+
+            <a href="{{ url_for('contact') }}" class="about-secondary-btn">
+                Contact Us
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<section class="about-stats">
+
+    <div class="about-stat">
+        <div class="stat-icon">📚</div>
+        <h2>Multiple</h2>
+        <p>Scheme Categories</p>
+    </div>
+
+    <div class="about-stat">
+        <div class="stat-icon">🎯</div>
+        <h2>Easy</h2>
+        <p>Scheme Discovery</p>
+    </div>
+
+    <div class="about-stat">
+        <div class="stat-icon">🔎</div>
+        <h2>Simple</h2>
+        <p>Eligibility Search</p>
+    </div>
+
+    <div class="about-stat">
+        <div class="stat-icon">🇮🇳</div>
+        <h2>For Everyone</h2>
+        <p>Across India</p>
+    </div>
+
+</section>
+
+
+<!-- =========================
+     WHO WE ARE
+========================= -->
+
+<section class="about-who">
+
+    <div class="about-who-container">
+
+        <div class="about-who-image">
+
+            <div class="floating-card card-one">
+                <span>🔍</span>
+                <div>
+                    <strong>Discover</strong>
+                    <small>Relevant schemes</small>
+                </div>
+            </div>
+
+            <div class="floating-card card-two">
+                <span>✓</span>
+                <div>
+                    <strong>Check</strong>
+                    <small>Eligibility easily</small>
+                </div>
+            </div>
+
+            <div class="about-circle">
+
+                <div class="circle-content">
+                    <span>🌐</span>
+                    <strong>OurScheme</strong>
+                    <small>Connecting Citizens</small>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="about-who-text">
+
+            <div class="section-tag">
+                WHO WE ARE
+            </div>
+
+            <h2>
+                Bridging the gap between
+                <span>citizens & opportunities.</span>
+            </h2>
+
+            <p>
+                Government schemes can provide valuable support in
+                education, healthcare, employment, agriculture,
+                housing and many other areas.
+            </p>
+
+            <p>
+                However, finding the right scheme and understanding
+                its eligibility requirements can sometimes be
+                difficult.
+            </p>
+
+            <p>
+                <strong>OurScheme</strong> was created to make that
+                process simpler by bringing useful scheme information
+                together in a clean and easy-to-use platform.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MISSION
+========================= -->
+
+<section class="about-mission">
+
+    <div class="mission-heading">
+
+        <div class="section-tag">
+            OUR MISSION
+        </div>
+
+        <h2>
+            Information should be
+            <span>easy for everyone.</span>
+        </h2>
+
+        <p>
+            Our mission is to make government scheme information
+            easier to discover, understand and access.
+        </p>
+
+    </div>
+
+
+    <div class="mission-grid">
+
+        <div class="mission-card">
+
+            <div class="mission-card-icon">
+                🔎
+            </div>
+
+            <h3>Discover</h3>
+
+            <p>
+                Explore schemes through organized categories
+                and simple navigation.
+            </p>
+
+        </div>
+
+
+        <div class="mission-card">
+
+            <div class="mission-card-icon">
+                📋
+            </div>
+
+            <h3>Understand</h3>
+
+            <p>
+                Learn about benefits, eligibility and required
+                documents in an easy-to-understand format.
+            </p>
+
+        </div>
+
+
+        <div class="mission-card">
+
+            <div class="mission-card-icon">
+                🎯
+            </div>
+
+            <h3>Connect</h3>
+
+            <p>
+                Find relevant information and access official
+                resources for further assistance.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CATEGORIES
+========================= -->
+
+<section class="about-categories">
+
+    <div class="categories-heading">
+
+        <div class="section-tag">
+            WHAT WE COVER
+        </div>
+
+        <h2>
+            Something for
+            <span>everyone.</span>
+        </h2>
+
+        <p>
+            Explore different areas where government schemes
+            can provide support.
+        </p>
+
+    </div>
+
+
+    <div class="category-grid">
+
+        <div class="category-card">
+            <div>🎓</div>
+            <h3>Education</h3>
+            <p>
+                Scholarships and educational assistance programs.
+            </p>
+        </div>
+
+        <div class="category-card">
+            <div>🌾</div>
+            <h3>Agriculture</h3>
+            <p>
+                Support programs and schemes for farmers.
+            </p>
+        </div>
+
+        <div class="category-card">
+            <div>💼</div>
+            <h3>Employment</h3>
+            <p>
+                Employment and skill development opportunities.
+            </p>
+        </div>
+
+        <div class="category-card">
+            <div>🏥</div>
+            <h3>Healthcare</h3>
+            <p>
+                Healthcare and medical assistance programs.
+            </p>
+        </div>
+
+        <div class="category-card">
+            <div>🏠</div>
+            <h3>Housing</h3>
+            <p>
+                Housing and related assistance schemes.
+            </p>
+        </div>
+
+        <div class="category-card">
+            <div>💰</div>
+            <h3>Financial Support</h3>
+            <p>
+                Financial assistance programs for eligible citizens.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section class="about-process">
+
+    <div class="process-heading">
+
+        <div class="section-tag">
+            HOW IT WORKS
+        </div>
+
+        <h2>
+            Finding the right scheme
+            <span>made simple.</span>
+        </h2>
+
+    </div>
+
+
+    <div class="process-container">
+
+        <div class="process-step">
+
+            <div class="process-number">
+                01
+            </div>
+
+            <h3>Explore</h3>
+
+            <p>
+                Browse schemes based on different categories
+                and requirements.
+            </p>
+
+        </div>
+
+
+        <div class="process-line"></div>
+
+
+        <div class="process-step">
+
+            <div class="process-number">
+                02
+            </div>
+
+            <h3>Check</h3>
+
+            <p>
+                Understand the eligibility criteria, benefits
+                and required documents.
+            </p>
+
+        </div>
+
+
+        <div class="process-line"></div>
+
+
+        <div class="process-step">
+
+            <div class="process-number">
+                03
+            </div>
+
+            <h3>Connect</h3>
+
+            <p>
+                Use official resources to learn more about
+                the application process.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     VISION
+========================= -->
+
+<section class="about-vision">
+
+    <div class="vision-content">
+
+        <div class="vision-icon">
+            🚀
+        </div>
+
+        <div class="section-tag light">
+            OUR VISION
+        </div>
+
+        <h2>
+            A more informed
+            <span>India.</span>
+        </h2>
+
+        <p>
+            We envision a platform where people can easily
+            discover government schemes that may be relevant
+            to their needs — without having to search through
+            countless sources.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CTA
+========================= -->
+
+<section class="about-cta">
+
+    <div class="cta-content">
+
+        <h2>
+            Ready to discover what's
+            <span>available for you?</span>
+        </h2>
+
+        <p>
+            Start exploring government schemes today.
+        </p>
+
+        <a href="{{ url_for('home') }}" class="cta-button">
+            Explore Schemes →
+        </a>
+
+    </div>
+
+</section>
+
+
+{% endblock %}

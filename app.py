@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,url_for
+from flask import Flask,render_template,request,url_for,flash,redirect
 import mysql.connector
 
 db = mysql.connector.connect(
@@ -11,6 +11,7 @@ db = mysql.connector.connect(
 cursor = db.cursor(dictionary=True)
 
 app=Flask(__name__)
+app.secret_key="My_secret_key"
 
 
 
@@ -35,9 +36,26 @@ def eligibility():
     return render_template("eligibility.html")
 
 
-@app.route("/ContactUs")
+@app.route("/ContactUs" ,methods=["POST","GET"])
 def contact():
+    if request.method=="POST":
+        name=request.form.get("name")
+        email=request.form.get("email")
+        subject=request.form.get("subject")
+        message=request.form.get("message")
+
+        query="""INSERT INTO contacts(name,email,subject,message)VALUES(%s,%s,%s,%s);"""
+        cursor.execute(query,(name,email,subject,message))
+        db.commit()
+        flash("Your message has been submitted successfully!", "success")
+        return redirect(url_for("contact"))
+
     return render_template("contactUs.html")
+
+
+@app.route("/AboutUs")
+def aboutUs():
+    return render_template("AboutUs.html")
 
 if __name__=="__main__":
     app.run(debug=True)
