@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Login - OurScheme{% endblock %}
+
+{% block extra_css %}
+<style>
+    .auth-container {
+        padding-top: 150px;
+        padding-bottom: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .auth-card {
+        width: 100%;
+        max-width: 440px;
+        padding: 30px;
+        border: 2px solid #000;
+        border-radius: 12px;
+        background-color: #fff;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .auth-card h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+    .form-control {
+        border-radius: 6px;
+        border: 1px solid #333;
+        padding: 8px 12px;
+    }
+    .auth-btn {
+        width: 100%;
+        padding: 10px;
+        border-radius: 20px;
+        background-color: #000;
+        color: #fff;
+        font-weight: 600;
+        border: none;
+        margin-top: 15px;
+        transition: 0.2s ease;
+    }
+    .auth-btn:hover {
+        background-color: #333;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>Login to OurScheme</h2>
+        <p class="text-center text-muted" style="font-size: 14px;">Access your saved government schemes</p>
+        <hr>
+
+        <form action="{{ url_for('login') }}" method="POST">
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="auth-btn">Login</button>
+        </form>
+
+        <div class="text-center mt-3" style="font-size: 14px;">
+            <span>Don't have an account? </span>
+            <a href="{{ url_for('register') }}" style="color: #0d6efd; text-decoration: none; font-weight: 600;">Register here</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

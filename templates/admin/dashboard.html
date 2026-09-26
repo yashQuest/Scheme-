@@ -1,0 +1,116 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Dashboard Overview - OurScheme Admin{% endblock %}
+{% block page_title %}Dashboard Overview{% endblock %}
+
+{% set active_page = 'dashboard' %}
+
+{% block content %}
+<!-- Overview Summary Cards -->
+<div class="row g-4 mb-4">
+    <!-- Total Schemes -->
+    <div class="col-md-4">
+        <div class="stat-card stat-schemes">
+            <div class="stat-card-info">
+                <h6>Total Schemes</h6>
+                <h3>{{ total_schemes }}</h3>
+            </div>
+            <div class="stat-card-icon">
+                📋
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Categories -->
+    <div class="col-md-4">
+        <div class="stat-card stat-categories">
+            <div class="stat-card-info">
+                <h6>Categories</h6>
+                <h3>{{ total_categories }}</h3>
+            </div>
+            <div class="stat-card-icon">
+                🏷️
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Contact Messages -->
+    <div class="col-md-4">
+        <div class="stat-card stat-contacts">
+            <div class="stat-card-info">
+                <h6>Contact Messages</h6>
+                <h3>{{ total_contacts }}</h3>
+            </div>
+            <div class="stat-card-icon">
+                ✉️
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="admin-card">
+    <div class="admin-card-header">
+        <h2 class="admin-card-title">Quick Actions</h2>
+    </div>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="{{ url_for('admin_scheme_add') }}" class="btn-admin-primary">
+            ➕ Add New Scheme
+        </a>
+        <a href="{{ url_for('admin_schemes') }}" class="btn-admin-secondary">
+            📋 Manage All Schemes
+        </a>
+        <a href="{{ url_for('admin_contacts') }}" class="btn-admin-secondary">
+            ✉️ View Contact Submissions
+        </a>
+    </div>
+</div>
+
+<!-- Recent Schemes Table -->
+<div class="admin-card">
+    <div class="admin-card-header">
+        <h2 class="admin-card-title">Recently Added Schemes</h2>
+        <a href="{{ url_for('admin_schemes') }}" style="font-size: 0.9rem; color: var(--admin-primary); text-decoration: none; font-weight: 500;">View All Schemes →</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th style="width: 60px;">ID</th>
+                    <th>Scheme Name</th>
+                    <th>Category</th>
+                    <th>Official Link</th>
+                    <th style="width: 160px; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in recent_schemes %}
+                <tr>
+                    <td>{{ s.id }}</td>
+                    <td><strong>{{ s.scheme_name }}</strong></td>
+                    <td><span class="badge bg-light text-dark border">{{ s.category or 'General' }}</span></td>
+                    <td>
+                        {% if s.official_link %}
+                            <a href="{{ s.official_link }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem; color: #0284c7; text-decoration: none;">View Site ↗</a>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="{{ url_for('admin_scheme_edit', scheme_id=s.id) }}" class="btn-admin-edit">Edit</a>
+                        <form action="{{ url_for('admin_scheme_delete', scheme_id=s.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this scheme?');">
+                            <button type="submit" class="btn-admin-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center py-4 text-muted">No schemes found in database.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

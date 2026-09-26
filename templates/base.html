@@ -16,22 +16,41 @@
     <header>
         <div id="navbar">
             <div id="intro">
-                <h1>OurScheme</h1>
-                <p>Find,Check</p>
-                <p>Right Government scheme for you</p>
+                <a href="{{url_for('home')}}" style="text-decoration: none; color: inherit;">
+                    <h1>OurScheme</h1>
+                    <p>Find,Check</p>
+                    <p>Right Government scheme for you</p>
+                </a>
             </div>
 
             <div id="right">
                 <div id="line">
-                    <input type="text" placeholder="Search scheme" id="search">
-                    <button class="auth">Search</button>
-                    <button class="auth">Logout</button>
+                    <form action="{{ url_for('search') }}" method="GET" style="display:flex; align-items:center; margin:0; flex-grow: 1; max-width: 55vw;">
+                        <input type="text" name="q" placeholder="Search scheme" id="search" value="{{ request.args.get('q', '') }}" required style="width: 100%;">
+                        <button type="submit" class="auth">Search</button>
+                    </form>
+
+                    <div style="display: flex; align-items: center; gap: 6px;">
+                        {% if session.get('user_id') %}
+                            <span style="font-size: 13px; font-weight: 500; white-space: nowrap; margin-right: 4px;">Hi, {{ session.get('user_name', '').split(' ')[0] }}</span>
+                            <a href="{{ url_for('logout') }}"><button type="button" class="auth" style="width: auto; padding: 0 12px;">Logout</button></a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}"><button type="button" class="auth" style="width: auto; padding: 0 10px;">Login</button></a>
+                            <a href="{{ url_for('register') }}"><button type="button" class="auth" style="width: auto; padding: 0 10px;">Register</button></a>
+                        {% endif %}
+                    </div>
                 </div>
 
                 <div id="options">
                     <a href="{{url_for('home')}}" class="nav">Home</a>
-                    <a >Schemes</a>
+                    <a href="{{url_for('all_schemes')}}" class="nav">Schemes</a>
                     <a href="{{url_for('eligibility')}}" class="nav">Check Eligibility</a>
+                    {% if session.get('user_id') %}
+                        <a href="{{url_for('saved_schemes')}}" class="nav">Saved Schemes</a>
+                    {% endif %}
+                    {% if session.get('user_role') == 'admin' %}
+                        <a href="{{url_for('admin_dashboard')}}" class="nav" style="font-weight: bold; color: #b02a37;">Admin</a>
+                    {% endif %}
                     <a href="{{url_for('contact')}}" class="nav">Contact Us</a>
                     <a href="{{url_for('aboutUs')}}" class="nav">About Us</a>
                 </div>
@@ -40,10 +59,21 @@
     </header>
 
     <main>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div style="position: fixed; top: 120px; left: 50%; transform: translateX(-50%); z-index: 1050; min-width: 320px; max-width: 650px;">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'danger' if category in ['error', 'danger'] else ('warning' if category == 'warning' else 'success') }} alert-dismissible fade show" role="alert" style="box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
         {%block content%}    {% endblock%}
     </main>
-
-
 
     <footer>
         <p>2026 OurScheme | All Right Reserved</p>
@@ -51,6 +81,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="{{url_for('static',filename='eligibility.js')}}"></script>
 </body>
-
 
 </html>

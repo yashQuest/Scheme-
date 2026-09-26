@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page_title or 'Government Schemes' }} - OurScheme{% endblock %}
+{% block title %}My Saved Schemes - OurScheme{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='test.css') }}">
@@ -12,18 +12,17 @@
         max-width: 1200px;
         margin: 0 auto;
     }
-    .save-btn {
+    .remove-btn {
         background: none;
-        border: 1px solid #0d6efd;
-        color: #0d6efd;
+        border: 1px solid #dc3545;
+        color: #dc3545;
         padding: 4px 10px;
         border-radius: 4px;
         font-size: 13px;
         cursor: pointer;
-        text-decoration: none;
     }
-    .save-btn:hover {
-        background: #0d6efd;
+    .remove-btn:hover {
+        background: #dc3545;
         color: white;
     }
 </style>
@@ -31,14 +30,12 @@
 
 {% block content %}
 <div class="schemes-header-banner">
-    <h2>{{ heading or 'Government Schemes' }}</h2>
-    {% if sub_heading %}
-        <p class="text-muted">{{ sub_heading }}</p>
-    {% endif %}
+    <h2>My Saved Schemes</h2>
+    <p class="text-muted">Your bookmarked schemes for quick access and reference.</p>
 
     {% if not schemes %}
         <div class="alert alert-info mt-3">
-            No schemes found matching your criteria. <a href="{{ url_for('home') }}">Browse categories on home</a> or <a href="{{ url_for('eligibility') }}">check your eligibility</a>.
+            You haven't saved any schemes yet. <a href="{{ url_for('home') }}">Browse categories on home</a> or <a href="{{ url_for('eligibility') }}">check your eligibility</a> to find and bookmark schemes.
         </div>
     {% endif %}
 </div>
@@ -90,21 +87,10 @@
                 Official Website
             </a>
 
-            {% if session.get('user_id') %}
-                {% if saved_ids and scheme.id in saved_ids %}
-                    <form action="{{ url_for('unsave_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
-                        <input type="hidden" name="next" value="{{ request.full_path }}">
-                        <button type="submit" class="save-btn" style="background: #0d6efd; color: white;">★ Saved</button>
-                    </form>
-                {% else %}
-                    <form action="{{ url_for('save_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
-                        <input type="hidden" name="next" value="{{ request.full_path }}">
-                        <button type="submit" class="save-btn">☆ Save</button>
-                    </form>
-                {% endif %}
-            {% else %}
-                <a href="{{ url_for('login') }}" class="save-btn" title="Login to bookmark">☆ Save</a>
-            {% endif %}
+            <form action="{{ url_for('unsave_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
+                <input type="hidden" name="next" value="{{ request.full_path }}">
+                <button type="submit" class="remove-btn">✕ Remove</button>
+            </form>
         </div>
 
     </div>

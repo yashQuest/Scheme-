@@ -1,0 +1,148 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Add New Scheme - OurScheme Admin{% endblock %}
+{% block page_title %}Add New Government Scheme{% endblock %}
+
+{% set active_page = 'schemes' %}
+
+{% block content %}
+<div class="admin-card" style="max-width: 900px; margin: 0 auto;">
+    <div class="admin-card-header">
+        <h2 class="admin-card-title">Enter Scheme Details</h2>
+        <a href="{{ url_for('admin_schemes') }}" class="btn-admin-secondary">← Back to Schemes</a>
+    </div>
+
+    <form action="{{ url_for('admin_scheme_add') }}" method="POST">
+        <!-- 1. Scheme Information -->
+        <h5 style="color: var(--admin-primary); margin-bottom: 18px; font-weight: 600;">1. Scheme Information</h5>
+
+        <div class="admin-form-group">
+            <label for="scheme_name" class="admin-form-label">Scheme Name *</label>
+            <input type="text" class="admin-form-control" id="scheme_name" name="scheme_name" placeholder="e.g. Pradhan Mantri Kisan Samman Nidhi" required>
+        </div>
+
+        <div class="admin-form-group">
+            <label for="category_id" class="admin-form-label">Category *</label>
+            <select class="admin-form-control" id="category_id" name="category_id" required>
+                <option value="">-- Select Category --</option>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.category }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="admin-form-group">
+            <label for="description" class="admin-form-label">Description *</label>
+            <textarea class="admin-form-control" id="description" name="description" rows="3" placeholder="Provide a summary of the scheme..." required></textarea>
+        </div>
+
+        <div class="admin-form-group">
+            <label for="eligibility" class="admin-form-label">Eligibility Criteria (Summary Text) *</label>
+            <textarea class="admin-form-control" id="eligibility" name="eligibility" rows="2" placeholder="e.g. Small and marginal farmers with landholding..." required></textarea>
+        </div>
+
+        <div class="admin-form-group">
+            <label for="benefits" class="admin-form-label">Benefits *</label>
+            <textarea class="admin-form-control" id="benefits" name="benefits" rows="2" placeholder="e.g. Financial benefit of Rs. 6000 per year..." required></textarea>
+        </div>
+
+        <div class="admin-form-group">
+            <label for="required_document" class="admin-form-label">Required Documents *</label>
+            <input type="text" class="admin-form-control" id="required_document" name="required_document" placeholder="e.g. Aadhaar Card, Bank Details, Land Records" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 admin-form-group">
+                <label for="official_link" class="admin-form-label">Official Link</label>
+                <input type="url" class="admin-form-control" id="official_link" name="official_link" placeholder="https://example.gov.in" value="https://www.myscheme.gov.in/">
+            </div>
+            <div class="col-md-6 admin-form-group">
+                <label for="image" class="admin-form-label">Image Filename / Path</label>
+                <input type="text" class="admin-form-control" id="image" name="image" placeholder="Photo/Farmer.jpg or image filename" value="Photo/home.jpg">
+            </div>
+        </div>
+
+        <!-- 2. Structured Eligibility Matching (Optional / Recommended) -->
+        <h5 style="color: var(--admin-primary); margin-top: 25px; margin-bottom: 18px; font-weight: 600;">2. Recommendation Engine Criteria (Optional)</h5>
+
+        <div class="row">
+            <div class="col-md-4 admin-form-group">
+                <label for="min_age" class="admin-form-label">Min Age</label>
+                <input type="number" class="admin-form-control" id="min_age" name="min_age" min="0" max="120" placeholder="e.g. 18">
+            </div>
+            <div class="col-md-4 admin-form-group">
+                <label for="max_age" class="admin-form-label">Max Age</label>
+                <input type="number" class="admin-form-control" id="max_age" name="max_age" min="0" max="120" placeholder="e.g. 60">
+            </div>
+            <div class="col-md-4 admin-form-group">
+                <label for="max_income" class="admin-form-label">Max Income (Rs.)</label>
+                <input type="number" class="admin-form-control" id="max_income" name="max_income" min="0" step="1000" placeholder="e.g. 300000">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 admin-form-group">
+                <label for="gender" class="admin-form-label">Target Gender</label>
+                <select class="admin-form-control" id="gender" name="gender">
+                    <option value="Any">Any / All</option>
+                    <option value="Female">Female Only</option>
+                    <option value="Male">Male Only</option>
+                </select>
+            </div>
+            <div class="col-md-4 admin-form-group">
+                <label for="farmer" class="admin-form-label">Farmer Only?</label>
+                <select class="admin-form-control" id="farmer" name="farmer">
+                    <option value="Any">No restriction</option>
+                    <option value="Yes">Farmers Only (Yes)</option>
+                </select>
+            </div>
+            <div class="col-md-4 admin-form-group">
+                <label for="disability" class="admin-form-label">Disability Specific?</label>
+                <select class="admin-form-control" id="disability" name="disability">
+                    <option value="Any">No restriction</option>
+                    <option value="Yes">Disability Required (Yes)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 admin-form-group">
+                <label for="area_type" class="admin-form-label">Area Type</label>
+                <select class="admin-form-control" id="area_type" name="area_type">
+                    <option value="Any">All Areas</option>
+                    <option value="Rural">Rural</option>
+                    <option value="Urban">Urban</option>
+                </select>
+            </div>
+            <div class="col-md-4 admin-form-group">
+                <label for="social_category" class="admin-form-label">Social Category</label>
+                <input type="text" class="admin-form-control" id="social_category" name="social_category" value="Any" placeholder="Any or OBC, SC, ST">
+            </div>
+            <div class="col-md-4 admin-form-group">
+                <label for="house_owner" class="admin-form-label">House Ownership</label>
+                <select class="admin-form-control" id="house_owner" name="house_owner">
+                    <option value="Any">Any</option>
+                    <option value="No">Must not own pucca house</option>
+                    <option value="Yes">Homeowners only</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 admin-form-group">
+                <label for="occupation" class="admin-form-label">Target Occupation</label>
+                <input type="text" class="admin-form-control" id="occupation" name="occupation" value="Any" placeholder="e.g. Student, Farmer, Business Owner, or Any">
+            </div>
+            <div class="col-md-6 admin-form-group">
+                <label for="state" class="admin-form-label">State / Region</label>
+                <input type="text" class="admin-form-control" id="state" name="state" value="All" placeholder="All or specific state name">
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 25px;">
+            <a href="{{ url_for('admin_schemes') }}" class="btn-admin-secondary">Cancel</a>
+            <button type="submit" class="btn-admin-primary" style="padding: 10px 24px;">Save & Add Scheme</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit Scheme' if scheme else 'Add New Scheme' }} - Admin OurScheme{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-form-container {
+        padding-top: 140px;
+        padding-bottom: 60px;
+        padding-left: 30px;
+        padding-right: 30px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    .form-card {
+        background: #fff;
+        border: 2px solid #000;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-form-container">
+    <div class="form-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3>{{ 'Edit Scheme' if scheme else 'Add New Scheme' }}</h3>
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary btn-sm">← Back to Dashboard</a>
+        </div>
+        <hr>
+
+        <form method="POST">
+            <!-- Basic Details -->
+            <h5 class="mt-3 text-primary">1. Basic Information</h5>
+
+            <div class="mb-3">
+                <label for="scheme_name" class="form-label font-weight-bold">Scheme Name *</label>
+                <input type="text" class="form-control" id="scheme_name" name="scheme_name" value="{{ scheme.scheme_name if scheme else '' }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="category_id" class="form-label font-weight-bold">Category *</label>
+                <select class="form-select" id="category_id" name="category_id" required>
+                    <option value="">-- Select Category --</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if scheme and scheme.category_id == cat.id %}selected{% endif %}>
+                        {{ cat.category }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label font-weight-bold">Description *</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required>{{ scheme.description if scheme else '' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="eligibility" class="form-label font-weight-bold">Eligibility (Text description) *</label>
+                <textarea class="form-control" id="eligibility" name="eligibility" rows="2" required>{{ scheme.eligibility if scheme else '' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="benefits" class="form-label font-weight-bold">Benefits *</label>
+                <textarea class="form-control" id="benefits" name="benefits" rows="2" required>{{ scheme.benefits if scheme else '' }}</textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="required_document" class="form-label font-weight-bold">Required Documents *</label>
+                <input type="text" class="form-control" id="required_document" name="required_document" value="{{ scheme.required_document if scheme else 'Aadhaar Card, Bank Details' }}" required>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="official_link" class="form-label font-weight-bold">Official Website Link</label>
+                    <input type="url" class="form-control" id="official_link" name="official_link" value="{{ scheme.official_link if scheme else 'https://www.myscheme.gov.in/' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="image" class="form-label font-weight-bold">Image Filename</label>
+                    <input type="text" class="form-control" id="image" name="image" value="{{ scheme.image if scheme else 'Photo/home.jpg' }}">
+                </div>
+            </div>
+
+            <!-- Structured Eligibility Matching Fields -->
+            <h5 class="mt-4 text-primary">2. Structured Eligibility Criteria (Used by Recommendation Engine)</h5>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="min_age" class="form-label">Min Age</label>
+                    <input type="number" class="form-control" id="min_age" name="min_age" min="0" max="120" value="{{ scheme.min_age if scheme and scheme.min_age is not none else '' }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="max_age" class="form-label">Max Age</label>
+                    <input type="number" class="form-control" id="max_age" name="max_age" min="0" max="120" value="{{ scheme.max_age if scheme and scheme.max_age is not none else '' }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="max_income" class="form-label">Max Annual Income (Rs.)</label>
+                    <input type="number" class="form-control" id="max_income" name="max_income" min="0" step="1000" value="{{ scheme.max_income if scheme and scheme.max_income is not none else '' }}">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="gender" class="form-label">Eligible Gender</label>
+                    <select class="form-select" id="gender" name="gender">
+                        <option value="Any" {% if not scheme or scheme.gender == 'Any' %}selected{% endif %}>Any / All</option>
+                        <option value="Female" {% if scheme and scheme.gender == 'Female' %}selected{% endif %}>Female Only</option>
+                        <option value="Male" {% if scheme and scheme.gender == 'Male' %}selected{% endif %}>Male Only</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="farmer" class="form-label">Farmer Specific?</label>
+                    <select class="form-select" id="farmer" name="farmer">
+                        <option value="Any" {% if not scheme or scheme.farmer == 'Any' %}selected{% endif %}>No restriction</option>
+                        <option value="Yes" {% if scheme and scheme.farmer == 'Yes' %}selected{% endif %}>Farmers Only (Yes)</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="disability" class="form-label">Disability (Divyang)?</label>
+                    <select class="form-select" id="disability" name="disability">
+                        <option value="Any" {% if not scheme or scheme.disability == 'Any' %}selected{% endif %}>No restriction</option>
+                        <option value="Yes" {% if scheme and scheme.disability == 'Yes' %}selected{% endif %}>Disability Required (Yes)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label for="area_type" class="form-label">Area Type</label>
+                    <select class="form-select" id="area_type" name="area_type">
+                        <option value="Any" {% if not scheme or scheme.area_type == 'Any' %}selected{% endif %}>All Areas</option>
+                        <option value="Rural" {% if scheme and scheme.area_type == 'Rural' %}selected{% endif %}>Rural Only</option>
+                        <option value="Urban" {% if scheme and scheme.area_type == 'Urban' %}selected{% endif %}>Urban Only</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="social_category" class="form-label">Social Category</label>
+                    <input type="text" class="form-control" id="social_category" name="social_category" placeholder="Any or OBC, SC, ST" value="{{ scheme.social_category if scheme and scheme.social_category else 'Any' }}">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label for="house_owner" class="form-label">House Ownership</label>
+                    <select class="form-select" id="house_owner" name="house_owner">
+                        <option value="Any" {% if not scheme or scheme.house_owner == 'Any' %}selected{% endif %}>Any</option>
+                        <option value="No" {% if scheme and scheme.house_owner == 'No' %}selected{% endif %}>Must NOT own a house</option>
+                        <option value="Yes" {% if scheme and scheme.house_owner == 'Yes' %}selected{% endif %}>Homeowners only</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="occupation" class="form-label">Target Occupation</label>
+                    <input type="text" class="form-control" id="occupation" name="occupation" placeholder="e.g. Student, Farmer, Business Owner, or Any" value="{{ scheme.occupation if scheme and scheme.occupation else 'Any' }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="state" class="form-label">State / Region</label>
+                    <input type="text" class="form-control" id="state" name="state" placeholder="All or specific state" value="{{ scheme.state if scheme and scheme.state else 'All' }}">
+                </div>
+            </div>
+
+            <div class="mt-4 text-end">
+                <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary" style="border-radius: 20px; padding: 6px 20px;">Cancel</a>
+                <button type="submit" class="btn btn-dark" style="border-radius: 20px; padding: 6px 25px; margin-left: 10px;">Save Scheme</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

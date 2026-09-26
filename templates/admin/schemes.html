@@ -1,0 +1,85 @@
+{% extends "admin/admin_base.html" %}
+
+{% block title %}Manage Schemes - OurScheme Admin{% endblock %}
+{% block page_title %}Manage Government Schemes{% endblock %}
+
+{% set active_page = 'schemes' %}
+
+{% block content %}
+<div class="admin-card">
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title">Government Schemes List</h2>
+            <p class="text-muted mb-0" style="font-size: 0.85rem;">Showing {{ schemes|length }} scheme(s) registered in the database.</p>
+        </div>
+
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <!-- Search Form -->
+            <form action="{{ url_for('admin_schemes') }}" method="GET" class="admin-search-box">
+                <input type="text" name="q" class="admin-search-input" placeholder="Search scheme or category..." value="{{ q or '' }}">
+                <button type="submit" class="btn-admin-secondary" style="padding: 7px 14px;">Search</button>
+                {% if q %}
+                    <a href="{{ url_for('admin_schemes') }}" class="btn-admin-secondary" style="padding: 7px 12px; color: #dc3545;">Clear</a>
+                {% endif %}
+            </form>
+
+            <!-- Add Scheme Button -->
+            <a href="{{ url_for('admin_scheme_add') }}" class="btn-admin-primary">
+                ➕ Add Scheme
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th style="width: 50px;">ID</th>
+                    <th>Scheme Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th style="width: 110px;">Official Link</th>
+                    <th style="width: 150px; text-align: center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in schemes %}
+                <tr>
+                    <td><strong>#{{ s.id }}</strong></td>
+                    <td>
+                        <strong style="color: #1e293b;">{{ s.scheme_name }}</strong>
+                    </td>
+                    <td>
+                        <span class="badge bg-light text-dark border">{{ s.category or 'Uncategorized' }}</span>
+                    </td>
+                    <td style="max-width: 350px;">
+                        <div style="font-size: 0.85rem; color: #475569; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                            {{ s.description }}
+                        </div>
+                    </td>
+                    <td>
+                        {% if s.official_link %}
+                            <a href="{{ s.official_link }}" target="_blank" rel="noopener noreferrer" style="font-size: 0.85rem; color: #0284c7; text-decoration: none;">View Site ↗</a>
+                        {% else %}
+                            <span class="text-muted">-</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: center;">
+                        <a href="{{ url_for('admin_scheme_edit', scheme_id=s.id) }}" class="btn-admin-edit">Edit</a>
+                        <form action="{{ url_for('admin_scheme_delete', scheme_id=s.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete scheme: \'{{ s.scheme_name|replace('\'', '\\\'') }}\'?\nThis action cannot be undone.');">
+                            <button type="submit" class="btn-admin-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">
+                        No schemes found matching your search query.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
