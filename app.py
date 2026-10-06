@@ -11,9 +11,19 @@ from werkzeug.security import generate_password_hash, check_password_hash
 # Local business logic modules
 from eligibility_engine import find_matching_schemes
 from ai_extractor import extract_user_profile
+from translator import SUPPORTED_LANGUAGES, get_language_name
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "OurScheme_Secret_Key_2026_Secure")
+
+@app.context_processor
+def inject_language_context():
+    """Injects active language and supported languages dictionary into all Jinja templates."""
+    return {
+        "current_language": session.get("lang", "en"),
+        "supported_languages": SUPPORTED_LANGUAGES,
+        "get_language_name": get_language_name
+    }
 
 # Database configuration
 DB_CONFIG = {
@@ -61,6 +71,14 @@ def admin_login_required(f):
             return redirect(url_for("admin_login", next=request.path))
         return f(*args, **kwargs)
     return decorated_function
+
+
+@app.route("/set_language/<lang_code>", methods=["POST", "GET"])
+def set_language(lang_code):
+    """Sets active language in Flask session."""
+    if lang_code in SUPPORTED_LANGUAGES:
+        session["lang"] = lang_code
+    return {"status": "success", "language": session.get("lang", "en")}
 
 
 # ==================================================
@@ -605,6 +623,7 @@ def admin_schemes():
 
 
 @app.route("/admin/schemes/add", methods=["GET", "POST"])
+@app.route("/admin/scheme/add", methods=["GET", "POST"])
 @admin_login_required
 def admin_scheme_add():
     """
@@ -672,6 +691,7 @@ def admin_scheme_add():
 
 
 @app.route("/admin/schemes/edit/<int:scheme_id>", methods=["GET", "POST"])
+@app.route("/admin/scheme/edit/<int:scheme_id>", methods=["GET", "POST"])
 @admin_login_required
 def admin_scheme_edit(scheme_id):
     """
@@ -740,6 +760,7 @@ def admin_scheme_edit(scheme_id):
 
 
 @app.route("/admin/schemes/delete/<int:scheme_id>", methods=["POST"])
+@app.route("/admin/scheme/delete/<int:scheme_id>", methods=["POST"])
 @admin_login_required
 def admin_scheme_delete(scheme_id):
     """

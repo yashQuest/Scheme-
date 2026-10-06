@@ -137,16 +137,16 @@ def test_all():
 
     # Login as admin
     admin_login = {
-        "email": "admin@ourscheme.gov.in",
+        "username": "admin",
         "password": "admin123"
     }
-    res = client.post("/login", data=admin_login, follow_redirects=True)
+    res = client.post("/admin/login", data=admin_login, follow_redirects=True)
     assert res.status_code == 200
 
     # View admin dashboard
     res = client.get("/admin")
     assert res.status_code == 200
-    assert b"Admin Dashboard" in res.data
+    assert b"Dashboard Overview" in res.data
     print("[PASS] GET /admin dashboard passed for admin")
 
     # Add a scheme via admin
