@@ -1,80 +1,175 @@
 {% extends "base.html" %}
 
-{% block title %}Login - OurScheme{% endblock %}
+{% block title %}Citizen Login - OurScheme{% endblock %}
 
 {% block extra_css %}
 <style>
-    .auth-container {
-        padding-top: 150px;
-        padding-bottom: 60px;
+    .auth-wrapper {
+        min-height: calc(100vh - 200px);
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #FAF7F2 0%, #F3E8FF 100%);
     }
-    .auth-card {
+
+    .auth-bright-card {
         width: 100%;
         max-width: 440px;
-        padding: 30px;
-        border: 2px solid #000;
-        border-radius: 12px;
-        background-color: #fff;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        background: #FFFFFF;
+        border: 2.5px solid #E8E0D5;
+        border-radius: 24px;
+        padding: 40px 35px;
+        box-shadow: 0 20px 45px rgba(106, 0, 244, 0.08);
+        position: relative;
     }
-    .auth-card h2 {
+
+    .auth-header {
         text-align: center;
+        margin-bottom: 28px;
+    }
+
+    .auth-logo-badge {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, #6A00F4 0%, #8E2DE2 100%);
+        color: #FFB703;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        margin: 0 auto 16px;
+        box-shadow: 0 8px 22px rgba(106, 0, 244, 0.35);
+        border: 1.5px solid #FFB703;
+    }
+
+    .auth-title {
+        font-size: 26px;
+        font-weight: 800;
+        color: #140A26;
+        margin-bottom: 6px;
+    }
+
+    .auth-subtitle {
+        font-size: 14px;
+        color: #7B6E88;
+        margin: 0;
+    }
+
+    .auth-form-group {
         margin-bottom: 20px;
+    }
+
+    .auth-form-label {
+        font-size: 14px;
         font-weight: 700;
+        color: #140A26;
+        margin-bottom: 6px;
+        display: block;
     }
-    .form-label {
-        font-weight: 500;
-        margin-bottom: 5px;
+
+    .auth-input-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
     }
-    .form-control {
-        border-radius: 6px;
-        border: 1px solid #333;
-        padding: 8px 12px;
+
+    .auth-input-icon {
+        position: absolute;
+        left: 14px;
+        color: #6A00F4;
+        font-size: 16px;
+        pointer-events: none;
     }
-    .auth-btn {
+
+    .auth-input {
         width: 100%;
-        padding: 10px;
-        border-radius: 20px;
-        background-color: #000;
-        color: #fff;
+        padding: 12px 14px 12px 42px;
+        border: 2px solid #E8E0D5;
+        border-radius: 12px;
+        background: #FAF7F2;
+        font-size: 14.5px;
         font-weight: 600;
-        border: none;
-        margin-top: 15px;
-        transition: 0.2s ease;
+        color: #140A26;
+        outline: none;
+        transition: all 0.2s ease;
     }
-    .auth-btn:hover {
-        background-color: #333;
+
+    .auth-input:focus {
+        background: #FFFFFF;
+        border-color: #6A00F4;
+        box-shadow: 0 0 0 4px rgba(106, 0, 244, 0.15);
+    }
+
+    .btn-auth-submit {
+        width: 100%;
+        padding: 13px;
+        border-radius: 9999px;
+        background: linear-gradient(135deg, #FFB703 0%, #FF8800 100%);
+        color: #140A26;
+        font-size: 15px;
+        font-weight: 800;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 16px rgba(255, 183, 3, 0.4);
+        margin-top: 10px;
+    }
+
+    .btn-auth-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 183, 3, 0.5);
+    }
+
+    .auth-footer-text {
+        text-align: center;
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 2px solid #E8E0D5;
+        font-size: 14px;
+        color: #7B6E88;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="auth-container">
-    <div class="auth-card">
-        <h2>Login to OurScheme</h2>
-        <p class="text-center text-muted" style="font-size: 14px;">Access your saved government schemes</p>
-        <hr>
+<div class="auth-wrapper">
+    <div class="auth-bright-card">
+        <div class="auth-header">
+            <div class="auth-logo-badge">
+                <i class="bi bi-person-fill-lock"></i>
+            </div>
+            <h2 class="auth-title">Citizen Login</h2>
+            <p class="auth-subtitle">Access your saved schemes and application status</p>
+        </div>
 
         <form action="{{ url_for('login') }}" method="POST">
-            <div class="mb-3">
-                <label for="email" class="form-label">Email Address</label>
-                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+            <div class="auth-form-group">
+                <label for="email" class="auth-form-label">Email Address</label>
+                <div class="auth-input-wrap">
+                    <i class="bi bi-envelope-fill auth-input-icon"></i>
+                    <input type="email" class="auth-input" id="email" name="email" placeholder="name@example.com" required autocomplete="email">
+                </div>
             </div>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+            <div class="auth-form-group">
+                <label for="password" class="auth-form-label">Password</label>
+                <div class="auth-input-wrap">
+                    <i class="bi bi-shield-lock-fill auth-input-icon"></i>
+                    <input type="password" class="auth-input" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+                </div>
             </div>
 
-            <button type="submit" class="auth-btn">Login</button>
+            <button type="submit" class="btn-auth-submit">
+                <span>Sign In to OurScheme</span>
+                <i class="bi bi-arrow-right ms-1"></i>
+            </button>
         </form>
 
-        <div class="text-center mt-3" style="font-size: 14px;">
-            <span>Don't have an account? </span>
-            <a href="{{ url_for('register') }}" style="color: #0d6efd; text-decoration: none; font-weight: 600;">Register here</a>
+        <div class="auth-footer-text">
+            <span>New to OurScheme? </span>
+            <a href="{{ url_for('register') }}" class="fw-bold text-violet text-decoration-none">Create Free Account</a>
         </div>
     </div>
 </div>

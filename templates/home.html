@@ -1,251 +1,591 @@
-{% extends "base.html"%}
+{% extends "base.html" %}
 
-{% block title %} Home {% endblock %}
+{% block title %}OurScheme - Discover All Central & State Government Welfare Schemes{% endblock %}
 
-{%block content%}
+{% block content %}
 
+<!-- =================================================================
+     NEW ASYMMETRICAL 2-COLUMN HERO SECTION
+     (Electric Violet, Golden Yellow & Soft Ivory)
+     ================================================================= -->
+<section class="hero-wrapper">
+    <div class="container-fluid max-container position-relative" style="z-index: 2;">
+        <div class="row align-items-center g-5">
+            <!-- Left Column: Headline, Search & Sector Tags -->
+            <div class="col-lg-7">
+                <!-- Golden Yellow Hero Badge -->
+                <div class="hero-pill-badge stagger-1">
+                    <i class="bi bi-patch-check-fill text-gold"></i>
+                    <span>Official National Welfare & Subsidy Portal</span>
+                </div>
 
-<div id="carouselExampleCaptions" class="carousel slide">
-  <div class="carousel-indicators">
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"
-      aria-current="true" aria-label="Slide 1"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
-    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
-  </div>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="{{url_for('static',filename='Photo/Women.jpg')}}" class="d-block w-100" alt="...">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>First slide label</h5>
-        <p>Some representative placeholder content for the first slide.</p>
-      </div>
+                <!-- Main Hero Headline -->
+                <h1 class="hero-title stagger-2">
+                    Find the Right Government Schemes <br class="d-none d-xl-block">
+                    for <span class="highlight-gold">You & Your Family</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="hero-subtitle stagger-3">
+                    Search over 50+ verified welfare initiatives across education scholarships, farmer assistance, women entrepreneurship, healthcare, and affordable housing with direct official application portals.
+                </p>
+
+                <!-- Search Card -->
+                <form action="{{ url_for('search') }}" method="GET" class="hero-search-card stagger-4">
+                    <div class="hero-search-inner">
+                        <i class="bi bi-search text-violet fs-5 ms-3"></i>
+                        <input type="text" name="q" class="hero-search-input" placeholder="Type scheme name or benefit (e.g. PM Kisan, Scholarship, Housing)..." required autocomplete="off">
+                        <button type="submit" class="hero-search-btn">
+                            <span>Search Schemes</span>
+                            <i class="bi bi-arrow-right-short fs-4"></i>
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Quick Filter Sector Tags -->
+                <div class="hero-quick-pills">
+                    <span class="quick-pill-label">Popular Categories:</span>
+                    <a href="{{ url_for('find', scheme_id=1) }}" class="quick-pill">🎓 Students</a>
+                    <a href="{{ url_for('find', scheme_id=2) }}" class="quick-pill">🌾 Farmers</a>
+                    <a href="{{ url_for('find', scheme_id=3) }}" class="quick-pill">👩 Women</a>
+                    <a href="{{ url_for('find', scheme_id=6) }}" class="quick-pill">🏥 Healthcare</a>
+                    <a href="{{ url_for('find', scheme_id=8) }}" class="quick-pill">💼 MSME / Business</a>
+                    <a href="{{ url_for('find', scheme_id=7) }}" class="quick-pill">🏠 Housing</a>
+                    <a href="{{ url_for('find', scheme_id=5) }}" class="quick-pill">👴 Senior Citizens</a>
+                </div>
+            </div>
+
+            <!-- Right Column: Interactive Fast-Finder & Highlights Card -->
+            <div class="col-lg-5">
+                <div class="hero-feature-card">
+                    <div class="hero-card-header">
+                        <h4 class="hero-card-title">
+                            <i class="bi bi-lightning-charge-fill text-gold"></i>
+                            <span>Featured Welfare Initiatives</span>
+                        </h4>
+                        <span class="hero-card-live-badge">Updated 2026</span>
+                    </div>
+
+                    <div class="hero-quick-list">
+                        <!-- Scheme 1 -->
+                        <a href="{{ url_for('find', scheme_id=2) }}" class="hero-quick-item">
+                            <div class="hero-item-info">
+                                <div class="hero-item-icon">🌾</div>
+                                <div>
+                                    <h5 class="hero-item-title">PM Kisan Samman Nidhi</h5>
+                                    <p class="hero-item-tag">₹6,000 / yr Direct Income Support</p>
+                                </div>
+                            </div>
+                            <i class="bi bi-chevron-right text-gold"></i>
+                        </a>
+
+                        <!-- Scheme 2 -->
+                        <a href="{{ url_for('find', scheme_id=1) }}" class="hero-quick-item">
+                            <div class="hero-item-info">
+                                <div class="hero-item-icon">🎓</div>
+                                <div>
+                                    <h5 class="hero-item-title">NSP Post-Matric Scholarship</h5>
+                                    <p class="hero-item-tag">Full Tuition Concession & Stipend</p>
+                                </div>
+                            </div>
+                            <i class="bi bi-chevron-right text-gold"></i>
+                        </a>
+
+                        <!-- Scheme 3 -->
+                        <a href="{{ url_for('find', scheme_id=6) }}" class="hero-quick-item">
+                            <div class="hero-item-info">
+                                <div class="hero-item-icon">🏥</div>
+                                <div>
+                                    <h5 class="hero-item-title">Ayushman Bharat (PM-JAY)</h5>
+                                    <p class="hero-item-tag">₹5,00,000 Cashless Health Cover</p>
+                                </div>
+                            </div>
+                            <i class="bi bi-chevron-right text-gold"></i>
+                        </a>
+                    </div>
+
+                    <a href="{{ url_for('eligibility') }}" class="hero-action-cta">
+                        <span>Check Your Complete Eligibility (2 Mins) →</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="carousel-item">
-      <img src="{{url_for('static',filename='Photo/Education.jpg')}}" class="d-block w-100" alt="...">
-      <div class="carousel-caption">
-        <h5>Second slide label</h5>
-        <p>Some representative placeholder content for the second slide.</p>
-      </div>
+</section>
+
+<!-- =================================================================
+     REDESIGNED STATS STRIP (Soft Ivory Cards with Violet & Gold Accents)
+     ================================================================= -->
+<div class="container-fluid max-container stats-strip-wrap">
+    <div class="stats-card-grid">
+        <div class="stat-box-modern">
+            <div class="stat-icon-wrapper violet">
+                <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+            <div>
+                <div class="stat-num-val">50+ Schemes</div>
+                <p class="stat-lbl-text">Active Welfare Programs</p>
+            </div>
+        </div>
+
+        <div class="stat-box-modern">
+            <div class="stat-icon-wrapper gold">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+            </div>
+            <div>
+                <div class="stat-num-val">16 Sectors</div>
+                <p class="stat-lbl-text">Targeted Categories</p>
+            </div>
+        </div>
+
+        <div class="stat-box-modern">
+            <div class="stat-icon-wrapper violet">
+                <i class="bi bi-shield-check"></i>
+            </div>
+            <div>
+                <div class="stat-num-val">100% Free</div>
+                <p class="stat-lbl-text">No Middlemen or Fees</p>
+            </div>
+        </div>
+
+        <div class="stat-box-modern">
+            <div class="stat-icon-wrapper gold">
+                <i class="bi bi-translate"></i>
+            </div>
+            <div>
+                <div class="stat-num-val">10 Languages</div>
+                <p class="stat-lbl-text">Multilingual Portal</p>
+            </div>
+        </div>
     </div>
-    <div class="carousel-item">
-      <img src="{{url_for('static',filename='Photo/Rural.jpg')}}" class="d-block w-100" alt="...">
-      <div class="carousel-caption">
-        <h5>Third slide label</h5>
-        <p>Some representative placeholder content for the third slide.</p>
-      </div>
-    </div>
-  </div>
-  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </button>
-  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </button>
 </div>
 
-<br>
-
-<div id="dataset">
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Education.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Student & Education</h5>
-      <p class="card-text">Explore scholarships, education loans, free learning programs, and skill development schemes
-        that help students achieve their academic and career goals.</p>
-      <a href="{{url_for('find',scheme_id=1)}}" class="btn btn-primary">Go somewhere</a>
+<!-- =================================================================
+     TRENDING INITIATIVES BAR (Electric Violet & Soft Ivory)
+     ================================================================= -->
+<section class="py-4 mt-2">
+    <div class="container-fluid max-container">
+        <div class="trending-strip-wrap">
+            <div class="trending-pill-badge">
+                <i class="bi bi-fire text-gold"></i>
+                <span>Trending Now</span>
+            </div>
+            <div class="trending-pills-list">
+                <a href="{{ url_for('find', scheme_id=2) }}" class="trend-item-btn">🌾 PM Kisan 17th Installment</a>
+                <a href="{{ url_for('find', scheme_id=1) }}" class="trend-item-btn">🎓 NSP National Scholarship</a>
+                <a href="{{ url_for('find', scheme_id=6) }}" class="trend-item-btn">🏥 Ayushman Card 5L</a>
+                <a href="{{ url_for('find', scheme_id=7) }}" class="trend-item-btn">🏠 PMAY Urban 2.0</a>
+                <a href="{{ url_for('find', scheme_id=15) }}" class="trend-item-btn">⚡ PM Surya Ghar Solar</a>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 
+<!-- =================================================================
+     ALL 16 CATEGORY CARDS (Soft Ivory + Electric Violet & Gold Accents)
+     ================================================================= -->
+<section class="py-5">
+    <div class="container-fluid max-container">
+        <div class="section-header">
+            <span class="section-tag-pill">Explore Categories</span>
+            <h2 class="section-title">Government Schemes by Sector</h2>
+            <p class="section-subtitle">Click on any category to view all verified schemes, eligibility guidelines, required paperwork, and official portal links.</p>
+        </div>
 
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Farner.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Farmer & Agriculture</h5>
-      <p class="card-text">Find schemes that provide financial support, crop insurance, farming equipment subsidies,
-        irrigation assistance, and agricultural loans for farmers.</p>
-      <a href="{{url_for('find',scheme_id=2)}}" class="btn btn-primary">Go somewhere</a>
+        <div class="category-grid-container">
+            <!-- 1. Student & Education -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Education.jpg') }}" alt="Student & Education Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-mortarboard-fill text-violet"></i> Education</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Student & Education</h3>
+                    <p class="category-card-desc">Scholarships, education loans, fee concessions, and skill training programs for school and college students.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=1) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Farmer & Agriculture -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Farner.jpg') }}" alt="Farmer & Agriculture Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-tree-fill text-violet"></i> Agriculture</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Farmer & Agriculture</h3>
+                    <p class="category-card-desc">Income support (PM-Kisan), crop insurance (PMFBY), tractor subsidies, fertilizer assistance, and farm loans.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=2) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Women Empowerment -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Women.jpg') }}" alt="Women Empowerment Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-gender-female text-violet"></i> Women</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Women Empowerment</h3>
+                    <p class="category-card-desc">Maternity benefits (PMMVY), girls' education savings (Sukanya Samriddhi), and self-help group loans.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=3) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Employment & Skills -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Employment.jpg') }}" alt="Employment & Skill Development">
+                    <span class="category-badge-chip"><i class="bi bi-tools text-violet"></i> Employment</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Employment & Skills</h3>
+                    <p class="category-card-desc">Free vocational training under PMKVY, apprenticeship incentives, job placement, and self-employment aid.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=4) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. Senior Citizens -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/SeniorCitizen.jpg') }}" alt="Senior Citizens Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-person-heart text-violet"></i> Senior Citizens</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Senior Citizens</h3>
+                    <p class="category-card-desc">Old age pension schemes (IGNOAPS), higher interest savings accounts (SCSS), and subsidized medical care.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=5) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. Healthcare -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Health.jpg') }}" alt="Healthcare Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-heart-pulse-fill text-violet"></i> Healthcare</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Healthcare</h3>
+                    <p class="category-card-desc">Ayushman Bharat (PM-JAY) with ₹5 Lakh health cover, Jan Aushadhi generic medicines, and critical illness aid.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=6) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. Housing -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/House.jpg') }}" alt="Housing Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-house-door-fill text-violet"></i> Housing</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Housing Schemes</h3>
+                    <p class="category-card-desc">Pradhan Mantri Awas Yojana (PMAY) providing financial grants and interest subsidies for owning a pucca home.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=7) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. Business & MSME -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Bussiness.jpg') }}" alt="Business & MSME Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-briefcase-fill text-violet"></i> Business & MSME</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Business & MSME</h3>
+                    <p class="category-card-desc">PMEGP subsidy loans up to ₹50 Lakh, PM MUDRA loans without collateral, and Stand-Up India funding.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=8) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. Financial Assistance -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Financial.jpg') }}" alt="Financial Assistance Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-cash-stack text-violet"></i> Financial</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Financial Assistance</h3>
+                    <p class="category-card-desc">PM Jan Dhan banking, Atal Pension Yojana (APY), PM Suraksha Bima (PMSBY), and micro-credit welfare.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=9) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. SC / ST / OBC Welfare -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Sc.jpg') }}" alt="SC / ST / OBC Welfare">
+                    <span class="category-badge-chip"><i class="bi bi-shield-shaded text-violet"></i> Affirmative</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">SC / ST / OBC Welfare</h3>
+                    <p class="category-card-desc">Pre & post matric scholarships, overseas educational grants, and specialized venture capital support.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=10) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. Disability (Divyang) -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Dissabled1.jpg') }}" alt="Divyang Schemes">
+                    <span class="category-badge-chip"><i class="bi bi-universal-access text-violet"></i> Divyang</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Disability (Divyang)</h3>
+                    <p class="category-card-desc">UDID cards, ADIP assistive devices, Divyangjan disability pensions, and tailored skill development.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=11) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. Child Welfare -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/child.jpg') }}" alt="Child Welfare">
+                    <span class="category-badge-chip"><i class="bi bi-emoji-smile-fill text-violet"></i> Children</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Child Welfare</h3>
+                    <p class="category-card-desc">Integrated Child Development Services (ICDS), Poshan Abhiyaan nutrition, and child protection programs.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=12) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 13. Rural Development -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Rural.jpg') }}" alt="Rural Development">
+                    <span class="category-badge-chip"><i class="bi bi-geo-alt-fill text-violet"></i> Rural</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Rural Development</h3>
+                    <p class="category-card-desc">MGNREGA 100-day guaranteed wage employment, Jal Jeevan Mission tap water, and PM Gram Sadak roads.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=13) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14. Urban Development -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Urban.jpg') }}" alt="Urban Development">
+                    <span class="category-badge-chip"><i class="bi bi-buildings-fill text-violet"></i> Urban</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Urban Development</h3>
+                    <p class="category-card-desc">PM SVANidhi street vendor collateral-free loans, AMRUT urban rejuvenation, and Swachh Bharat missions.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=14) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15. Environment & Energy -->
+            <div class="luxury-category-card">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/energy1.jpg') }}" alt="Environment & Energy">
+                    <span class="category-badge-chip"><i class="bi bi-lightning-charge-fill text-violet"></i> Green Energy</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Environment & Energy</h3>
+                    <p class="category-card-desc">PM Surya Ghar Muft Bijli Yojana (Rooftop solar up to ₹78,000 subsidy) and PM Ujjwala free LPG connections.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=15) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 16. Social Welfare -->
+            <div class="luxury-category-card cat-gold">
+                <div class="card-top-color-strip"></div>
+                <div class="card-media-wrap">
+                    <img src="{{ url_for('static', filename='Photo/Social.jpg') }}" alt="Social Welfare">
+                    <span class="category-badge-chip"><i class="bi bi-people-fill text-violet"></i> Social Welfare</span>
+                </div>
+                <div class="category-card-body">
+                    <h3 class="category-card-title">Social Welfare</h3>
+                    <p class="category-card-desc">Comprehensive food security ration under PMGKAY, widow pensions, and destitute welfare support.</p>
+                    <div class="category-card-footer">
+                        <a href="{{ url_for('find', scheme_id=16) }}" class="category-explore-link">
+                            <span>Explore Schemes</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Women.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Women Empowerment</h5>
-      <p class="card-text">Discover schemes that promote women's education, entrepreneurship, financial independence,
-        healthcare, and social security.</p>
-      <a href="{{url_for('find',scheme_id=3)}}" class="btn btn-primary">Go somewhere</a>
+<!-- =================================================================
+     ELIGIBILITY FINDER BANNER (Electric Violet & Golden Yellow)
+     ================================================================= -->
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container-fluid max-container">
+        <div class="p-5 rounded-4" style="background: var(--grad-violet); color: white; box-shadow: var(--shadow-violet); border: 2px solid var(--gold);">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-white text-violet fw-bold px-3 py-1 rounded-pill mb-3 text-uppercase border">Check Your Eligibility</span>
+                    <h2 class="fw-bold mb-3 text-white" style="font-size: clamp(28px, 3vw, 42px);">
+                        Find Every Government Scheme You Are Eligible For in Under 2 Minutes
+                    </h2>
+                    <p class="text-white mb-4" style="font-size: 16px; opacity: 0.95;">
+                        Fill in your age, state, education, and income parameters to get an instant tailored list of schemes with direct government portal application links.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="{{ url_for('eligibility') }}" class="btn btn-auth-primary btn-lg rounded-pill px-4 fw-bold shadow-sm">
+                            <i class="bi bi-card-checklist me-1"></i> Start Eligibility Check →
+                        </a>
+                        <a href="{{ url_for('all_schemes') }}" class="btn btn-outline-light btn-lg rounded-pill px-4 fw-bold">
+                            Browse All 50+ Schemes
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-block text-center">
+                    <div class="p-4 rounded-4 shadow text-start" style="background: var(--ivory-surface); color: var(--text-main); border: 2px solid var(--gold);">
+                        <h6 class="fw-bold text-violet mb-3"><i class="bi bi-shield-check text-gold me-2"></i>What You Get:</h6>
+                        <div class="d-flex align-items-center gap-2 mb-2 small fw-bold">
+                            <i class="bi bi-check-circle-fill text-gold fs-5"></i> Accurate scheme recommendations
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mb-2 small fw-bold">
+                            <i class="bi bi-check-circle-fill text-gold fs-5"></i> Complete required document checklist
+                        </div>
+                        <div class="d-flex align-items-center gap-2 small fw-bold">
+                            <i class="bi bi-check-circle-fill text-gold fs-5"></i> Direct links to official government portals
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Employment.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Employment & Skill Development</h5>
-      <p class="card-text">Access government programs offering skill training, employment opportunities, startup
-        support, and self-employment assistance.</p>
-      <a href="{{url_for('find',scheme_id=4)}}" class="btn btn-primary">Go somewhere</a>
+<!-- =================================================================
+     CITIZEN ROADMAP (3-STEP HOW IT WORKS)
+     ================================================================= -->
+<section class="steps-section-wrap">
+    <div class="container-fluid max-container">
+        <div class="section-header">
+            <span class="section-tag-pill">Easy 3 Steps</span>
+            <h2 class="section-title">How to Access Government Benefits</h2>
+            <p class="section-subtitle">OurScheme simplifies the entire discovery and application process into three straightforward steps.</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number-badge">1</div>
+                    <h3 class="step-title">Discover Schemes</h3>
+                    <p class="step-desc">
+                        Browse through our 16 curated welfare sectors or search by keywords to find the assistance you need.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number-badge">2</div>
+                    <h3 class="step-title">Verify Eligibility</h3>
+                    <p class="step-desc">
+                        Review clear income criteria, age limits, social reservations, and check off required documents.
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="step-card">
+                    <div class="step-number-badge">3</div>
+                    <h3 class="step-title">Apply on Official Portal</h3>
+                    <p class="step-desc">
+                        Click directly to the verified official government portal to submit your application safely without fees.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+</section>
 
-
-
-
-
-</div>
-
-
-<br>
-
-<div id="dataset">
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/SeniorCitizen.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Senior Citizens</h5>
-      <p class="card-text">Browse pension plans, healthcare benefits, savings schemes, and welfare programs designed to
-        support senior citizens.</p>
-      <a href="{{url_for('find',scheme_id=5)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Health.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Healthcare</h5>
-      <p class="card-text">Explore health insurance, affordable medicines, medical assistance, and healthcare
-        initiatives for individuals and families.</p>
-      <a href="{{url_for('find',scheme_id=6)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/House.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Housing</h5>
-      <p class="card-text">Find affordable housing schemes, home loan subsidies, and financial assistance programs to
-        help you own a home.</p>
-      <a href="{{url_for('find',scheme_id=7)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Bussiness.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Business & MSME</h5>
-      <p class="card-text">Discover government support for startups, small businesses, MSMEs, business loans, and
-        entrepreneurship development.</p>
-      <a href="{{url_for('find',scheme_id=8)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-
-
-
-
-</div>
-
-<br>
-
-<div id="dataset">
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Financial.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Financial Assistance</h5>
-      <p class="card-text">Learn about savings schemes, insurance plans, pension programs, and banking initiatives that
-        improve financial security.</p>
-      <a href="{{url_for('find',scheme_id=9)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Sc.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">SC / ST / OBC Welfare</h5>
-      <p class="card-text">Access scholarships, skill development, business support, and welfare schemes created for SC,
-        ST, and OBC communities.</p>
-      <a href="{{url_for('find',scheme_id=10)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Dissabled1.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Disability (Divyang)</h5>
-      <p class="card-text">Explore schemes that provide education, employment opportunities, financial aid, healthcare,
-        and assistive devices for persons with disabilities.</p>
-      <a href="{{url_for('find',scheme_id=11)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/child.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Child Welfare</h5>
-      <p class="card-text">Find schemes supporting child nutrition, education, healthcare, protection, and overall
-        development for a brighter future.</p>
-      <a href="{{url_for('find',scheme_id=12)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-
-
-
-
-</div>
-
-<br>
-
-<div id="dataset">
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Rural.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Rural Development</h5>
-      <p class="card-text">Discover initiatives focused on rural employment, infrastructure, clean drinking water,
-        roads, and sustainable village development.</p>
-      <a href="{{url_for('find',scheme_id=13)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Urban.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Urban Development</h5>
-      <p class="card-text">Learn about smart city projects, sanitation, affordable housing, public transport, and urban
-        infrastructure improvement schemes.</p>
-      <a href="{{url_for('find',scheme_id=14)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/energy1.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Environment & Energy</h5>
-      <p class="card-text">Explore renewable energy, solar power, environmental conservation, and sustainable
-        development schemes for a greener future.</p>
-      <a href="{{url_for('find',scheme_id=15)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-  <div class="card" style="width: 18rem;">
-    <img src="{{url_for('static',filename='Photo/Social.jpg')}}" class="card-img-top" alt="...">
-    <div class="card-body">
-      <h5 class="card-title">Social Welfare</h5>
-      <p class="card-text">Browse welfare programs offering financial assistance, food security, pensions, and social
-        support for vulnerable citizens.</p>
-      <a href="{{url_for('find',scheme_id=16)}}" class="btn btn-primary">Go somewhere</a>
-    </div>
-  </div>
-
-
-
-
-
-</div>
-
-<br>
-<br>
-{% endblock%}
+{% endblock %}

@@ -4,99 +4,111 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='test.css') }}">
-<style>
-    .schemes-header-banner {
-        padding-top: 140px;
-        padding-left: 30px;
-        padding-right: 30px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .remove-btn {
-        background: none;
-        border: 1px solid #dc3545;
-        color: #dc3545;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 13px;
-        cursor: pointer;
-    }
-    .remove-btn:hover {
-        background: #dc3545;
-        color: white;
-    }
-</style>
 {% endblock %}
 
 {% block content %}
-<div class="schemes-header-banner">
-    <h2>My Saved Schemes</h2>
-    <p class="text-muted">Your bookmarked schemes for quick access and reference.</p>
+<!-- Top Header Banner -->
+<section class="schemes-header-banner">
+    <div class="container-fluid max-container">
+        <div class="banner-breadcrumb">
+            <a href="{{ url_for('home') }}"><i class="bi bi-house me-1"></i>Home</a>
+            <i class="bi bi-chevron-right text-white-50" style="font-size: 10px;"></i>
+            <span class="text-white">Saved Schemes</span>
+        </div>
 
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h1 class="schemes-page-title">My Bookmarked Schemes</h1>
+                <p class="schemes-page-subtitle">Your personalized list of saved welfare programs for quick reference and application.</p>
+            </div>
+            <div>
+                <span class="schemes-count-badge">
+                    <i class="bi bi-bookmark-heart-fill text-danger"></i>
+                    <span>{{ schemes|length }} Schemes Bookmarked</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid max-container">
     {% if not schemes %}
-        <div class="alert alert-info mt-3">
-            You haven't saved any schemes yet. <a href="{{ url_for('home') }}">Browse categories on home</a> or <a href="{{ url_for('eligibility') }}">check your eligibility</a> to find and bookmark schemes.
+        <!-- Empty State -->
+        <div class="schemes-empty-state">
+            <div class="empty-icon"><i class="bi bi-bookmark-plus"></i></div>
+            <h3 class="fw-bold text-dark mb-2">No Saved Schemes Yet</h3>
+            <p class="text-muted mb-4">You haven't bookmarked any schemes yet. Browse through categories or use our scheme eligibility calculator to find and bookmark schemes.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ url_for('all_schemes') }}" class="btn btn-primary rounded-pill px-4 fw-bold">Browse All Schemes</a>
+                <a href="{{ url_for('eligibility') }}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Check Eligibility</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- Saved Schemes Grid -->
+        <div id="dt">
+            {% for scheme in schemes %}
+            <div class="scheme-bright-card cd">
+                <div>
+                    <!-- Thumbnail Media -->
+                    <div class="scheme-card-media">
+                        <img src="{{ url_for('static', filename=scheme.image) }}"
+                             onerror="this.onerror=null;this.src='{{ url_for('static', filename='Photo/home.jpg') }}';"
+                             alt="{{ scheme.scheme_name }}">
+                        {% if scheme.category %}
+                            <span class="scheme-card-category-badge">
+                                <i class="bi bi-tag-fill text-primary me-1"></i>{{ scheme.category }}
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    <!-- Details -->
+                    <div class="scheme-card-body">
+                        <h4 class="scheme-card-title">{{ scheme.scheme_name }}</h4>
+                        <p class="scheme-card-desc">{{ scheme.description }}</p>
+
+                        <div class="scheme-spec-group">
+                            {% if scheme.eligibility %}
+                            <div class="scheme-spec-item">
+                                <strong><i class="bi bi-person-check-fill text-primary"></i> Eligibility:</strong>
+                                <span>{{ scheme.eligibility }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if scheme.benefits %}
+                            <div class="scheme-spec-item benefits-block">
+                                <strong><i class="bi bi-gift-fill text-success"></i> Benefits:</strong>
+                                <span>{{ scheme.benefits }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if scheme.required_document %}
+                            <div class="scheme-spec-item doc-block">
+                                <strong><i class="bi bi-file-earmark-text-fill text-warning"></i> Required Documents:</strong>
+                                <span>{{ scheme.required_document }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer with Official Link & Remove Bookmark -->
+                <div class="scheme-card-footer">
+                    <a href="{{ scheme.official_link }}" target="_blank" rel="noopener noreferrer" class="btn-official-site">
+                        <span>Official Portal</span>
+                        <i class="bi bi-box-arrow-up-right" style="font-size: 11px;"></i>
+                    </a>
+
+                    <form action="{{ url_for('unsave_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
+                        <input type="hidden" name="next" value="{{ request.full_path }}">
+                        <button type="submit" class="remove-bookmark-btn" title="Remove bookmark">
+                            <i class="bi bi-trash3-fill"></i>
+                            <span>Remove</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     {% endif %}
 </div>
-
-<div id="dt" style="padding-top: 20px;">
-
-    {% for scheme in schemes %}
-
-    <div class="cd card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
-
-        <div>
-            <img src="{{ url_for('static', filename=scheme.image) }}"
-                 class="card-img-top"
-                 style="height: 180px; object-fit: cover;"
-                 onerror="this.onerror=null;this.src='{{ url_for('static', filename='Photo/home.jpg') }}';"
-                 alt="{{ scheme.scheme_name }}">
-
-            <div class="card-body">
-
-                {% if scheme.category %}
-                <span class="badge bg-secondary mb-2" style="font-size: 11px;">{{ scheme.category }}</span>
-                {% endif %}
-
-                <h5 class="card-title">
-                    {{ scheme.scheme_name }}
-                </h5>
-
-                <p class="card-text">
-                    {{ scheme.description }}
-                </p>
-
-                <p class="card-text" style="font-size: 13px;">
-                    <strong>Eligibility:</strong> {{ scheme.eligibility }}
-                </p>
-
-                <p class="card-text" style="font-size: 13px;">
-                    <strong>Benefits:</strong> {{ scheme.benefits }}
-                </p>
-
-                <p class="card-text" style="font-size: 13px;">
-                    <strong>Required Documents:</strong> {{ scheme.required_document }}
-                </p>
-
-            </div>
-        </div>
-
-        <div class="card-footer" style="background: white; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;">
-            <a href="{{ scheme.official_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-                Official Website
-            </a>
-
-            <form action="{{ url_for('unsave_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
-                <input type="hidden" name="next" value="{{ request.full_path }}">
-                <button type="submit" class="remove-btn">✕ Remove</button>
-            </form>
-        </div>
-
-    </div>
-
-    {% endfor %}
-
-</div>
-
 {% endblock %}

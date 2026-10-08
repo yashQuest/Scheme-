@@ -1,116 +1,168 @@
 {% extends "base.html" %}
 
-{% block title %}{{ page_title or 'Government Schemes' }} - OurScheme{% endblock %}
+{% block title %}{{ heading or 'Government Schemes' }} - OurScheme{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='test.css') }}">
-<style>
-    .schemes-header-banner {
-        padding-top: 140px;
-        padding-left: 30px;
-        padding-right: 30px;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    .save-btn {
-        background: none;
-        border: 1px solid #0d6efd;
-        color: #0d6efd;
-        padding: 4px 10px;
-        border-radius: 4px;
-        font-size: 13px;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    .save-btn:hover {
-        background: #0d6efd;
-        color: white;
-    }
-</style>
 {% endblock %}
 
 {% block content %}
-<div class="schemes-header-banner">
-    <h2>{{ heading or 'Government Schemes' }}</h2>
-    {% if sub_heading %}
-        <p class="text-muted">{{ sub_heading }}</p>
-    {% endif %}
-
-    {% if not schemes %}
-        <div class="alert alert-info mt-3">
-            No schemes found matching your criteria. <a href="{{ url_for('home') }}">Browse categories on home</a> or <a href="{{ url_for('eligibility') }}">check your eligibility</a>.
-        </div>
-    {% endif %}
-</div>
-
-<div id="dt" style="padding-top: 20px;">
-
-    {% for scheme in schemes %}
-
-    <div class="cd card" style="display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 2px 6px rgba(0,0,0,0.08);">
-
-        <div>
-            <img src="{{ url_for('static', filename=scheme.image) }}"
-                 class="card-img-top"
-                 style="height: 180px; object-fit: cover;"
-                 onerror="this.onerror=null;this.src='{{ url_for('static', filename='Photo/home.jpg') }}';"
-                 alt="{{ scheme.scheme_name }}">
-
-            <div class="card-body">
-
-                {% if scheme.category %}
-                <span class="badge bg-secondary mb-2" style="font-size: 11px;">{{ scheme.category }}</span>
-                {% endif %}
-
-                <h5 class="card-title">
-                    {{ scheme.scheme_name }}
-                </h5>
-
-                <p class="card-text">
-                    {{ scheme.description }}
-                </p>
-
-                <p class="card-text" style="font-size: 13px;">
-                    <strong>Eligibility:</strong> {{ scheme.eligibility }}
-                </p>
-
-                <p class="card-text" style="font-size: 13px;">
-                    <strong>Benefits:</strong> {{ scheme.benefits }}
-                </p>
-
-                <p class="card-text" style="font-size: 13px;">
-                    <strong>Required Documents:</strong> {{ scheme.required_document }}
-                </p>
-
-            </div>
-        </div>
-
-        <div class="card-footer" style="background: white; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px;">
-            <a href="{{ scheme.official_link }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
-                Official Website
-            </a>
-
-            {% if session.get('user_id') %}
-                {% if saved_ids and scheme.id in saved_ids %}
-                    <form action="{{ url_for('unsave_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
-                        <input type="hidden" name="next" value="{{ request.full_path }}">
-                        <button type="submit" class="save-btn" style="background: #0d6efd; color: white;">★ Saved</button>
-                    </form>
-                {% else %}
-                    <form action="{{ url_for('save_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
-                        <input type="hidden" name="next" value="{{ request.full_path }}">
-                        <button type="submit" class="save-btn">☆ Save</button>
-                    </form>
-                {% endif %}
-            {% else %}
-                <a href="{{ url_for('login') }}" class="save-btn" title="Login to bookmark">☆ Save</a>
+<!-- Top Category / Search Banner -->
+<section class="schemes-header-banner">
+    <div class="container-fluid max-container">
+        <div class="banner-breadcrumb">
+            <a href="{{ url_for('home') }}"><i class="bi bi-house me-1"></i>Home</a>
+            <i class="bi bi-chevron-right text-white-50" style="font-size: 10px;"></i>
+            <a href="{{ url_for('all_schemes') }}">Schemes</a>
+            {% if heading and heading != 'All Government Schemes' %}
+                <i class="bi bi-chevron-right text-white-50" style="font-size: 10px;"></i>
+                <span class="text-white">{{ heading }}</span>
             {% endif %}
         </div>
 
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <div>
+                <h1 class="schemes-page-title">{{ heading or 'All Government Schemes' }}</h1>
+                {% if sub_heading %}
+                    <p class="schemes-page-subtitle">{{ sub_heading }}</p>
+                {% endif %}
+            </div>
+            <div>
+                <span class="schemes-count-badge">
+                    <i class="bi bi-patch-check-fill text-primary"></i>
+                    <span>{{ schemes|length }} Schemes Available</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container-fluid max-container">
+    <!-- Category Filter Bar -->
+    <div class="category-filter-scroll">
+        <a href="{{ url_for('all_schemes') }}" class="cat-filter-btn {% if not request.view_args.get('scheme_id') and request.endpoint == 'all_schemes' %}active{% endif %}">
+            🌟 All Categories
+        </a>
+        <a href="{{ url_for('find', scheme_id=1) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 1 %}active{% endif %}">
+            🎓 Students & Education
+        </a>
+        <a href="{{ url_for('find', scheme_id=2) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 2 %}active{% endif %}">
+            🌾 Farmers & Agriculture
+        </a>
+        <a href="{{ url_for('find', scheme_id=3) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 3 %}active{% endif %}">
+            👩 Women Empowerment
+        </a>
+        <a href="{{ url_for('find', scheme_id=4) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 4 %}active{% endif %}">
+            💼 Employment & Skills
+        </a>
+        <a href="{{ url_for('find', scheme_id=6) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 6 %}active{% endif %}">
+            🏥 Healthcare
+        </a>
+        <a href="{{ url_for('find', scheme_id=7) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 7 %}active{% endif %}">
+            🏠 Housing
+        </a>
+        <a href="{{ url_for('find', scheme_id=8) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 8 %}active{% endif %}">
+            🏢 Business & MSME
+        </a>
+        <a href="{{ url_for('find', scheme_id=5) }}" class="cat-filter-btn {% if request.view_args.get('scheme_id') == 5 %}active{% endif %}">
+            👴 Senior Citizens
+        </a>
     </div>
 
-    {% endfor %}
+    {% if not schemes %}
+        <!-- Empty State -->
+        <div class="schemes-empty-state">
+            <div class="empty-icon"><i class="bi bi-search"></i></div>
+            <h3 class="fw-bold text-dark mb-2">No Matching Schemes Found</h3>
+            <p class="text-muted mb-4">We couldn't find any schemes matching your query. Try searching with different keywords or check out our scheme eligibility calculator.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="{{ url_for('home') }}" class="btn btn-primary rounded-pill px-4 fw-bold">Browse Categories</a>
+                <a href="{{ url_for('eligibility') }}" class="btn btn-outline-primary rounded-pill px-4 fw-bold">Check Eligibility</a>
+            </div>
+        </div>
+    {% else %}
+        <!-- Schemes Grid -->
+        <div id="dt">
+            {% for scheme in schemes %}
+            <div class="scheme-bright-card cd">
+                <div>
+                    <!-- Media -->
+                    <div class="scheme-card-media">
+                        <img src="{{ url_for('static', filename=scheme.image) }}"
+                             onerror="this.onerror=null;this.src='{{ url_for('static', filename='Photo/home.jpg') }}';"
+                             alt="{{ scheme.scheme_name }}">
+                        {% if scheme.category %}
+                            <span class="scheme-card-category-badge">
+                                <i class="bi bi-tag-fill text-primary me-1"></i>{{ scheme.category }}
+                            </span>
+                        {% endif %}
+                    </div>
 
+                    <!-- Body -->
+                    <div class="scheme-card-body">
+                        <h4 class="scheme-card-title">{{ scheme.scheme_name }}</h4>
+                        <p class="scheme-card-desc">{{ scheme.description }}</p>
+
+                        <div class="scheme-spec-group">
+                            {% if scheme.eligibility %}
+                            <div class="scheme-spec-item">
+                                <strong><i class="bi bi-person-check-fill text-primary"></i> Eligibility:</strong>
+                                <span>{{ scheme.eligibility }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if scheme.benefits %}
+                            <div class="scheme-spec-item benefits-block">
+                                <strong><i class="bi bi-gift-fill text-success"></i> Benefits:</strong>
+                                <span>{{ scheme.benefits }}</span>
+                            </div>
+                            {% endif %}
+
+                            {% if scheme.required_document %}
+                            <div class="scheme-spec-item doc-block">
+                                <strong><i class="bi bi-file-earmark-text-fill text-warning"></i> Required Documents:</strong>
+                                <span>{{ scheme.required_document }}</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="scheme-card-footer">
+                    <a href="{{ scheme.official_link }}" target="_blank" rel="noopener noreferrer" class="btn-official-site">
+                        <span>Official Portal</span>
+                        <i class="bi bi-box-arrow-up-right" style="font-size: 11px;"></i>
+                    </a>
+
+                    {% if session.get('user_id') %}
+                        {% if saved_ids and scheme.id in saved_ids %}
+                            <form action="{{ url_for('unsave_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
+                                <input type="hidden" name="next" value="{{ request.full_path }}">
+                                <button type="submit" class="save-action-btn is-saved" title="Remove bookmark">
+                                    <i class="bi bi-bookmark-fill"></i>
+                                    <span>Saved</span>
+                                </button>
+                            </form>
+                        {% else %}
+                            <form action="{{ url_for('save_scheme', scheme_id=scheme.id) }}" method="POST" style="margin:0;">
+                                <input type="hidden" name="next" value="{{ request.full_path }}">
+                                <button type="submit" class="save-action-btn" title="Bookmark scheme">
+                                    <i class="bi bi-bookmark"></i>
+                                    <span>Save</span>
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="save-action-btn" title="Login to save">
+                            <i class="bi bi-bookmark"></i>
+                            <span>Save</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 </div>
-
 {% endblock %}
